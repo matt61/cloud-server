@@ -1,4 +1,4 @@
-package com.lgb.app;
+package test.java.com.lgb.app;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

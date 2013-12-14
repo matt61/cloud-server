@@ -1,4 +1,4 @@
-package com.lgb.app;
+package main.java.com.lgb.app;
 
 /**
  * Hello world!
