@@ -1,4 +1,4 @@
-package main.java.com.lgb.model;
+package com.lgb.model;
 
 public class User {
 
