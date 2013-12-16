@@ -2,7 +2,7 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sdc.controller</groupId>
-    <artifactId>FirstController</artifactId>
+    <artifactId>CloudServer</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>SpringMVC Maven Webapp</name>
@@ -31,7 +31,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>FirstController</finalName>
+        <finalName>CloudServer</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
