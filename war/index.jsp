@@ -1,7 +1,7 @@
 <html>
-  <head><title>Example :: Spring Application</title></head>
+  <head><title>Hello :: Spring Application</title></head>
   <body>
-    <h1>Example - Spring Application</h1>
-    <p>This is my test.</p>
+    <h1>Hello - Spring Application</h1>
+    <p>Greetings.</p>
   </body>
 </html>
