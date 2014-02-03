@@ -2,7 +2,7 @@ package lgb.web;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import springapp.web.HelloController;
+import lgb.web.HelloController;
 
 import junit.framework.TestCase;
 
