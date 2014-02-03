@@ -74,15 +74,18 @@
 <!-- Tomcat tasks - remove these if you don't have Tomcat installed -->
 <!-- ============================================================== -->
 
-    <path id="catalina-ant-classpath">
-        <!-- We need the Catalina jars for Tomcat -->
-        <!--  * for other app servers - check the docs -->
-        <fileset dir="${appserver.lib}">
-            <include name="catalina-ant.jar"/>
-        </fileset>
-    </path>
+	<path id="catalina-ant-classpath">
+	    <fileset dir="${appserver.home}/lib">
+	        <include name="catalina-ant.jar"/>
+	        <include name="tomcat-coyote.jar"/>
+	        <include name="tomcat-util.jar"/>
+	    </fileset>
+	    <fileset dir="${appserver.home}/bin">
+	        <include name="tomcat-juli.jar"/>
+	    </fileset>
+	</path>
 
-    <taskdef name="install" classname="org.apache.catalina.ant.InstallTask">
+    <taskdef name="install" classname="org.apache.catalina.ant.DeployTask">
         <classpath refid="catalina-ant-classpath"/>
     </taskdef>
     <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
@@ -127,12 +130,11 @@
                  path="/${name}"/>
     </target>
 
-    <target name="list" description="List Tomcat applications">
-        <list url="${tomcat.manager.url}"
-                 username="${tomcat.manager.username}"
-                 password="${tomcat.manager.password}"/>
-    </target>
-
+	<target name="list" description="List Tomcat applications">
+	    <list url="${tomcat.manager.url}/text"
+	             username="${tomcat.manager.username}"
+	             password="${tomcat.manager.password}"/>
+	</target>
 <!-- End Tomcat tasks -->
 
 </project>
