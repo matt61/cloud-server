@@ -11,7 +11,12 @@ public class UserController extends MultiActionController {
 
     public ModelAndView add(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		System.out.println("Add method called");
-		return new ModelAndView("user/index");
+		return new ModelAndView("user", "msg", "Add");
+	}
+    
+    public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		System.out.println("Add method called");
+		return new ModelAndView("user", "msg", "Create");
 	}
 
 }

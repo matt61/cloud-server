@@ -1,6 +1,6 @@
 <html>
   <head><title>Hello :: Spring Application</title></head>
   <body>
-    User
+    User ${msg}
   </body>
 </html>
