@@ -20,8 +20,11 @@ public class HelloController implements Controller {
             throws ServletException, IOException {
 
         logger.info("Returning hello view");
+        
+        ModelAndView model = new ModelAndView("hello");
+        model.addObject("now", "hello world");
 
-        return new ModelAndView("WEB-INF/jsp/hello.jsp");
+        return model;
     }
 
 }
