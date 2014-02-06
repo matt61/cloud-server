@@ -1,0 +1,8 @@
+<hibernate-mapping package="lgb.model">
+    <class name="User" table="USERS">
+        <id name="id" column="ID">
+            <generator class="native"/>
+        </id>
+        <property name="first_name" column="FIRST_NAME"/>
+    </class>
+</hibernate-mapping>
