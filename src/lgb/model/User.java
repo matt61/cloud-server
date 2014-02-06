@@ -26,7 +26,7 @@ public class User {
         this.first_name = value;
     }
     
-    public void createAndStoreEvent(String first_name) {
+    public static void createAndStoreEvent(String first_name) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
 
