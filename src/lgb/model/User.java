@@ -22,7 +22,7 @@ public class User {
         return first_name;
     }
 
-    public void getFirstName(String value) {
+    public void setFirstName(String value) {
         this.first_name = value;
     }
     
@@ -31,7 +31,7 @@ public class User {
         session.beginTransaction();
 
         User theUser = new User();
-        theUser.getFirstName(first_name);
+        theUser.setFirstName(first_name);
         session.save(theUser);
 
         session.getTransaction().commit();
