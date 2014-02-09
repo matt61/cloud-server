@@ -34,8 +34,8 @@ public class UserController {
 //		return new ModelAndView("user", "msg", name);
 //	}
     
-	@RequestMapping("/user/view.htm")
-	public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	@RequestMapping("/user/view")
+	public ModelAndView view(){
 		System.out.println("Add method called");
 		return new ModelAndView("user/view", "msg", "Create");
 	}

@@ -7,14 +7,14 @@ https://anonsvn.springframework.org/svn/spring-samples/mvc-basic/trunk/
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
    <servlet>
-  	<servlet-name>lgb</servlet-name>
+  		<servlet-name>lgb</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
   </servlet>
  
   <servlet-mapping>
  	<servlet-name>lgb</servlet-name>
-    <url-pattern>*.htm</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
  
   <context-param>
