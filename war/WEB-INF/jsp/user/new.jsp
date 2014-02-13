@@ -6,7 +6,7 @@
 <body>
 	<h2>Contact Manager</h2>
 
-	<form:form method="POST" commandname="user">
+	<form:form method="POST" commandname="user" action="add">
 			<form:label path="firstName">Name:</form:label>
 			<form:input path="firstName"></form:input>
 		<input type="submit" value="Add Contact" />

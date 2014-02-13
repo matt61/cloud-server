@@ -1,7 +1,6 @@
 package lgb.model;
 
 import org.hibernate.Session;
-
 import lgb.util.HibernateUtil;
 
 public class User {

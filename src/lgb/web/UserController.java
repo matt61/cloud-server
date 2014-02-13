@@ -34,14 +34,16 @@ public class UserController {
     public String addUser(@ModelAttribute("user") User user, BindingResult result){
 		System.out.println(user.getFirstName());
 		
-//		User.createAndStoreEvent("test3");
-//		
-//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//		session.beginTransaction();
-//		List cats = session.createQuery("from User").list();
-//		String name = ((User) cats.get(0)).getFirstName();
-//		session.close();
-		return "Test";
+		//http://stackoverflow.com/questions/4037251/dao-vs-ormhibernate-pattern/4037454#4037454
+		
+		User.createAndStoreEvent("test3");
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List cats = session.createQuery("from User").list();
+		String name = ((User) cats.get(0)).getFirstName();
+		session.close();
+		return "redirect:view";
 	}
     
 	@RequestMapping("view")
