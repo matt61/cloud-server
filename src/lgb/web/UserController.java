@@ -1,23 +1,15 @@
 package lgb.web;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import lgb.model.User;
 import lgb.util.HibernateUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
