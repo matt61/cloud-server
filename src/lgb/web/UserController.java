@@ -1,6 +1,7 @@
 package lgb.web;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -27,34 +28,27 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @RequestMapping("/user")
 public class UserController {
 	
-//	@Autowired
-//    private User user;
-//
 	@RequestMapping(method = RequestMethod.POST, value = "add")
     public String addUser(@ModelAttribute("user") User user, BindingResult result){
-		System.out.println(user.getFirstName());
-		
-		//http://stackoverflow.com/questions/4037251/dao-vs-ormhibernate-pattern/4037454#4037454
-		
-		User.createAndStoreEvent("test3");
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		List cats = session.createQuery("from User").list();
-		String name = ((User) cats.get(0)).getFirstName();
-		session.close();
-		return "redirect:view";
+		session.save(user);
+		session.close();		
+		return "redirect:"+user.getId()+"/view";
 	}
     
-	@RequestMapping("view")
-	public ModelAndView viewUser(){
-		System.out.println("Add method called");
-		return new ModelAndView("user/view", "msg", "Create");
+	@RequestMapping("{userId}/view")
+	public ModelAndView viewUser(@PathVariable String userId){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		User user = (User) session.createQuery("from User where id = "+userId).uniqueResult();
+		session.close();
+		return new ModelAndView("user/view", "msg", user.getFirstName());
 	}
     
 	@RequestMapping("new")
     public ModelAndView newUser(){
-		return new ModelAndView("user/new", "command", new lgb.web.form.User());
+		return new ModelAndView("user/new", "command", new lgb.model.User());
 	}
 
 }
