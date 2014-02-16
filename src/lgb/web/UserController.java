@@ -37,6 +37,15 @@ public class UserController {
 		session.close();
 		return new ModelAndView("user/view", "msg", user.getFirstName());
 	}
+	
+	@RequestMapping("index")
+    public ModelAndView listUsers(){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List users = session.createQuery("from User").list();
+		session.close();
+		return new ModelAndView("user/list", "users", users);
+	}
     
 	@RequestMapping("new")
     public ModelAndView newUser(){
