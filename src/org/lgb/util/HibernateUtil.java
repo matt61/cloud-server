@@ -1,4 +1,4 @@
-package lgb.util;
+package org.lgb.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

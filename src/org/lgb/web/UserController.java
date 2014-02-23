@@ -1,14 +1,12 @@
-package lgb.web;
+package org.lgb.web;
 
 import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
 
+import org.lgb.model.User;
+import org.lgb.service.UserService;
 import org.springframework.web.servlet.ModelAndView;
-
-import lgb.model.User;
-import lgb.service.UserService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +44,14 @@ public class UserController {
 
 	@RequestMapping("new")
 	public ModelAndView newUser() {
-		return new ModelAndView("user/new", "command", new lgb.model.User());
+		return new ModelAndView("user/edit", "command", new org.lgb.model.User());
+	}
+	
+	@RequestMapping("edit")
+	public ModelAndView editUser() {
+		User user = new org.lgb.model.User();
+		user.setFirstName("Matt");
+		return new ModelAndView("user/edit", "command", user);
 	}
 
 }

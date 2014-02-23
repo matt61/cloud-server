@@ -1,12 +1,14 @@
-package lgb.service;
+package org.lgb.service;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.lgb.model.User;
+import org.lgb.util.HibernateUtil;
+
 import java.util.List;
-import lgb.model.User;
-import lgb.util.HibernateUtil;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.log4j.Logger;
@@ -34,20 +36,15 @@ public class UserService {
 		return user;
 	}
 
-	public void edit(User user) {
-		logger.debug("Editing existing person");
-
-		// Retrieve session from Hibernate
+	public void update(User user) {
 		Session session = sessionFactory.getCurrentSession();
-
-		// Retrieve existing person via id
+		Transaction trans = session.beginTransaction();
 		User existingUser = (User) session.get(User.class, user.getId());
 
-		// Assign updated values to this person
 		existingUser.setFirstName(user.getFirstName());
 
-		// Save updates
-		session.save(existingUser);
+		session.save(user);
+		trans.commit();
 	}
 
 	public void delete(Integer id) {
