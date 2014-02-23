@@ -8,17 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ID")
+	@Column(name = "id")
 	@GeneratedValue
     private Long id;
     
-	@Column(name = "FIRST_NAME")
+	@Column(name = "first_name")
 	private String first_name;
 
     public Long getId() {

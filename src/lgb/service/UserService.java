@@ -27,7 +27,6 @@ public class UserService {
 	}
 
 	public User get(Long id) {
-		// Retrieve session from Hibernate
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		User user = (User) session.get(User.class, id);
@@ -66,15 +65,12 @@ public class UserService {
 
 	public List<User> getAll() {
 		logger.debug("Retrieving all persons");
-
-		// Retrieve session from Hibernate
 		Session session = sessionFactory.getCurrentSession();
-
-		// Create a Hibernate query (HQL)
+		Transaction trans = session.beginTransaction();
 		Query query = session.createQuery("FROM User");
-
-		// Retrieve all
-		return query.list();
+		List<User> users = query.list();
+		trans.commit();
+		return users;
 	}
 
 }
