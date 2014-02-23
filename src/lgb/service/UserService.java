@@ -3,17 +3,12 @@ package lgb.service;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.Transaction;
 import java.util.List;
-
 import lgb.model.User;
 import lgb.util.HibernateUtil;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 
 @Service("userService")
@@ -21,27 +16,22 @@ import org.apache.log4j.Logger;
 public class UserService {
 
 	protected static Logger logger = Logger.getLogger("service");
-
-	@Resource(name = "sessionFactory")
-	private SessionFactory sessionFactory;
+	protected static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	public void add(User user) {
 		logger.debug("Adding new person");
-
-		// Retrieve session from Hibernate
 		Session session = sessionFactory.getCurrentSession();
-
-		// Save
+		Transaction trans = session.beginTransaction();
 		session.save(user);
+		trans.commit();
 	}
 
-	public User get(Integer id) {
+	public User get(Long id) {
 		// Retrieve session from Hibernate
 		Session session = sessionFactory.getCurrentSession();
-
-		// Retrieve existing person first
+		Transaction trans = session.beginTransaction();
 		User user = (User) session.get(User.class, id);
-
+		trans.commit();
 		return user;
 	}
 

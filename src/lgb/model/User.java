@@ -1,13 +1,25 @@
 package lgb.model;
 
-import org.hibernate.Session;
-import lgb.util.HibernateUtil;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class User {
+@Entity
+@Table(name = "USER")
+public class User implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue
     private Long id;
-    private String first_name;
-
-    public User() {}
+    
+	@Column(name = "FIRST_NAME")
+	private String first_name;
 
     public Long getId() {
         return id;
@@ -23,16 +35,5 @@ public class User {
 
     public void setFirstName(String value) {
         this.first_name = value;
-    }
-    
-    public static void createAndStoreEvent(String first_name) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-
-        User theUser = new User();
-        theUser.setFirstName(first_name);
-        session.save(theUser);
-
-        session.getTransaction().commit();
     }
 }

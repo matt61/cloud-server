@@ -1,13 +1,13 @@
 package lgb.web;
 
-import org.hibernate.Session;
+import org.apache.log4j.Logger;
 
-import java.util.List;
+import javax.annotation.Resource;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import lgb.model.User;
-import lgb.util.HibernateUtil;
+import lgb.service.UserService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,39 +16,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+//http://alekhya07.blogspot.com/2013/08/sample-application-of-spring.html
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
+
+	protected static Logger logger = Logger.getLogger("controller");
+
+	@Resource(name = "userService")
+	private UserService userService;
+
 	@RequestMapping(method = RequestMethod.POST, value = "add")
-    public String addUser(@ModelAttribute("user") User user, BindingResult result){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.save(user);
-		session.close();		
-		return "redirect:"+user.getId()+"/view";
+	public String addUser(@ModelAttribute("user") User user, BindingResult result) {
+		userService.add(user);
+		return "redirect:" + user.getId() + "/view";
 	}
-    
+
 	@RequestMapping("{userId}/view")
-	public ModelAndView viewUser(@PathVariable String userId){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		User user = (User) session.createQuery("from User where id = "+userId).uniqueResult();
-		session.close();
+	public ModelAndView viewUser(@PathVariable Long userId) {
+		User user = userService.get(userId);
 		return new ModelAndView("user/view", "msg", user.getFirstName());
 	}
-	
+
 	@RequestMapping("index")
-    public ModelAndView listUsers(){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List users = session.createQuery("from User").list();
-		session.close();
-		return new ModelAndView("user/list", "users", users);
+	public ModelAndView listUsers() {
+		return new ModelAndView("user/list", "users", userService.getAll());
 	}
-    
+
 	@RequestMapping("new")
-    public ModelAndView newUser(){
+	public ModelAndView newUser() {
 		return new ModelAndView("user/new", "command", new lgb.model.User());
 	}
 
