@@ -30,6 +30,12 @@ public class UserController {
 		userService.add(user);
 		return "redirect:" + user.getId() + "/view";
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "update")
+	public String updateUser(@ModelAttribute("user") User user, BindingResult result) {
+		userService.update(user);
+		return "redirect:" + user.getId() + "/view";
+	}
 
 	@RequestMapping("{userId}/view")
 	public ModelAndView viewUser(@PathVariable Long userId) {
@@ -44,13 +50,12 @@ public class UserController {
 
 	@RequestMapping("new")
 	public ModelAndView newUser() {
-		return new ModelAndView("user/edit", "command", new org.lgb.model.User());
+		return new ModelAndView("user/new", "command", new org.lgb.model.User());
 	}
 	
-	@RequestMapping("edit")
-	public ModelAndView editUser() {
-		User user = new org.lgb.model.User();
-		user.setFirstName("Matt");
+	@RequestMapping("{userId}/edit")
+	public ModelAndView editUser(@PathVariable Long userId) {
+		User user = userService.get(userId);
 		return new ModelAndView("user/edit", "command", user);
 	}
 

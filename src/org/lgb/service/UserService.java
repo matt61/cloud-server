@@ -40,10 +40,8 @@ public class UserService {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		User existingUser = (User) session.get(User.class, user.getId());
-
 		existingUser.setFirstName(user.getFirstName());
-
-		session.save(user);
+		session.save(existingUser);
 		trans.commit();
 	}
 
