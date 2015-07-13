@@ -1,5 +1,6 @@
 package org.lgb.web;
 
+import com.wordnik.swagger.annotations.*;
 import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @RequestMapping("/user")
+@Api(value = "user", description = "gets some data from a servlet")
 public class UserController {
 
 	protected static Logger logger = Logger.getLogger("controller");
@@ -32,6 +34,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "update")
+	@ApiOperation(httpMethod = "GET", value = "Update A user", nickname="update", position=3)
 	public String updateUser(@ModelAttribute("user") User user, BindingResult result) {
 		userService.update(user);
 		return "redirect:" + user.getId() + "/view";
