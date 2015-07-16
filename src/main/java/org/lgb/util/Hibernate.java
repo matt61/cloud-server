@@ -5,7 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.HibernateException;
 
-public class HibernateUtil
+public class Hibernate
 {
     private static SessionFactory sessionFactory;
     static

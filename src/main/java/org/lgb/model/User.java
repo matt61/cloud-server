@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "user")
@@ -18,22 +19,24 @@ public class User implements Serializable {
 	@GeneratedValue
     private Long id;
     
-	@Column(name = "first_name")
-	private String first_name;
-
+	@Column(name = "name")
+	private String name;
+	
+	@JsonProperty("id")
     public Long getId() {
         return id;
     }
-
-    private void setId(Long id) {
-        this.id = id;
+	
+	@JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    public String getFirstName() {
-        return first_name;
+    public void setName(String value) {
+        this.name = value;
     }
-
-    public void setFirstName(String value) {
-        this.first_name = value;
+	
+	public String toString() {
+        return "TEST";
     }
 }
