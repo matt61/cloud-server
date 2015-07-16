@@ -24,7 +24,6 @@ import java.io.IOException;
 @Api(value = "user")
 public class UserResource {
 
-	
 	protected static Logger logger = Logger.getLogger("service");
 	protected static SessionFactory sessionFactory = Hibernate.getSessionFactory();
 	protected static ObjectMapper mapper = new ObjectMapper(); 
@@ -49,11 +48,13 @@ public class UserResource {
 	
 	@POST
 	@Path("/")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@ApiOperation(value = "Create a new User")
-    public Response addUser(User user) throws IOException {
+    public Response addUser(@FormParam("name") String name) throws IOException {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
+		User user = new User();
+		user.setName(name);
 		session.save(user);
 		trans.commit();
 		return Response.status(201).entity(user.getId()).build();
