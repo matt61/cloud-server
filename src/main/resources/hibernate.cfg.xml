@@ -31,6 +31,7 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
         <mapping class="org.lgb.model.User"/>
+		<mapping class="org.lgb.model.File"/>
 		<!--
         <mapping resource="lgb/resources/User.hbm.xml"/>
 		-->

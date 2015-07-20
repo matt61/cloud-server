@@ -11,18 +11,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.swagger.annotations.*;
 import org.apache.log4j.Logger;
-import org.lgb.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.lgb.util.Hibernate;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 @Path("file")
 @Api(value = "file")
@@ -31,38 +27,41 @@ public class FileResource {
 	protected static Logger logger = Logger.getLogger("service");
 	protected static SessionFactory sessionFactory = Hibernate.getSessionFactory();
 	
-    /**
-     * Method handling HTTP GET requests. The returned object will be sent
-     * to the client as "text/plain" media type.
-     *
-     * @return String that will be returned as a text/plain response.
-     */
     @GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Find a file by id")
-    public User getFile(@PathParam("id") String id) {
+    public org.lgb.model.File getFile(@PathParam("id") Long id) {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
-		User user = (User) session.get(User.class, id);
+		org.lgb.model.File file = (org.lgb.model.File) session.get(org.lgb.model.File.class, id);
 		trans.commit();
-
-        return user;
+        return file;
     }
 	
 	@POST
-	@Path("/upload")
+	@Path("/{id}/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(@FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
- 
-		//String uploadedFileLocation = "d://uploaded/" + fileDetail.getFileName();
- 
-		// save it
-		//writeToFile(uploadedInputStream, uploadedFileLocation);
- 
-		//String output = "File uploaded to : " + uploadedFileLocation;
- 
-		return Response.status(200).entity(1).build();
- 
+	public Response uploadFile(@PathParam("id") Long id, @FormDataParam("file") InputStream uploadedInputStream) throws IOException {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction trans = session.beginTransaction();
+		org.lgb.model.File file = (org.lgb.model.File) session.get(org.lgb.model.File.class, id);
+		file.saveFile(uploadedInputStream);
+		trans.commit();
+		return Response.status(200).entity(file.getId()).build();
 	}
+	
+	@POST
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@ApiOperation(value = "Create a new File")
+    public Response addFile(@FormParam("name") String name) throws IOException {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction trans = session.beginTransaction();
+		org.lgb.model.File file = new org.lgb.model.File();
+		file.setFileName(name);
+		session.save(file);
+		trans.commit();
+		return Response.status(201).entity(file.getId()).build();
+    }
 }
