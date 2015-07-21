@@ -19,6 +19,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 @Path("file")
 @Api(value = "file")
@@ -31,7 +32,7 @@ public class FileResource {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Find a file by id")
-    public org.lgb.model.File getFile(@PathParam("id") Long id) {
+    public org.lgb.model.File getFile(@PathParam("id") UUID id) {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		org.lgb.model.File file = (org.lgb.model.File) session.get(org.lgb.model.File.class, id);
@@ -42,13 +43,14 @@ public class FileResource {
 	@POST
 	@Path("/{id}/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(@PathParam("id") Long id, @FormDataParam("file") InputStream uploadedInputStream) throws IOException {
+	public Response uploadContent(@PathParam("id") UUID id, @FormDataParam("file") InputStream uploadedInputStream) throws IOException {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		org.lgb.model.File file = (org.lgb.model.File) session.get(org.lgb.model.File.class, id);
-		file.saveFile(uploadedInputStream);
+		org.lgb.model.Content content = file.addContent(uploadedInputStream);
+		session.persist(content);
 		trans.commit();
-		return Response.status(200).entity(file.getId()).build();
+		return Response.status(201).entity(content.getId()).build();
 	}
 	
 	@POST
@@ -59,7 +61,7 @@ public class FileResource {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		org.lgb.model.File file = new org.lgb.model.File();
-		file.setFileName(name);
+		file.setName(name);
 		session.save(file);
 		trans.commit();
 		return Response.status(201).entity(file.getId()).build();

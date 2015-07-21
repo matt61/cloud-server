@@ -32,6 +32,8 @@
         <property name="hbm2ddl.auto">update</property>
         <mapping class="org.lgb.model.User"/>
 		<mapping class="org.lgb.model.File"/>
+		<mapping class="org.lgb.model.Snapshot"/>
+		<mapping class="org.lgb.model.Content"/>
 		<!--
         <mapping resource="lgb/resources/User.hbm.xml"/>
 		-->
