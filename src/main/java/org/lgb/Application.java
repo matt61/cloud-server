@@ -4,6 +4,7 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.lgb.web.FileResource;
 import org.lgb.web.UserResource;
+import org.lgb.web.SnapshotResource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,7 @@ public class Application extends javax.ws.rs.core.Application {
 		classes.add(MultiPartFeature.class);
 		classes.add(FileResource.class);
 		classes.add(UserResource.class);
+		classes.add(SnapshotResource.class);
 		classes.add(LoggingFilter.class);
 		return classes;
 	}

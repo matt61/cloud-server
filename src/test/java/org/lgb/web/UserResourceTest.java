@@ -27,16 +27,14 @@ public class UserResourceTest extends JerseyTest {
     public void testAddUser() {
 		Form form = new Form().param("name", "test");
 		Entity<Form> entity = Entity.form(form);
-		GenericType<Response> generic = new GenericType<Response>(Response.class);
-        Response response = target("user").request(MediaType.APPLICATION_JSON).post(entity, generic);
+        Response response = target("user").request(MediaType.APPLICATION_JSON).post(entity);
         assertEquals(201, response.getStatus());
         assertEquals("1", response.readEntity(String.class));
     }
 	
 	@Test
     public void testGetUser() {
-		GenericType<Response> generic = new GenericType<Response>(Response.class);
-        Response response = target("user/1").request(MediaType.APPLICATION_JSON).get(generic);
+        Response response = target("user/1").request(MediaType.APPLICATION_JSON).get();
 		User user = response.readEntity(User.class);
         assertEquals(200, response.getStatus());
         assertEquals("test", user.getName());

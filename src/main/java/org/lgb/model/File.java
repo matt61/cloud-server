@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -22,10 +26,12 @@ import java.util.UUID;
 @Table(name = "file")
 public class File implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "file")
-	private Set<Content> contents = new HashSet<Content>(0);
+	private Set<Version> versions = new HashSet<Version>(0);
+	
+	@OneToOne(cascade=CascadeType.ALL)  
+    @JoinColumn(name="latest_version") 
+	private Version latestVersion;
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -35,7 +41,20 @@ public class File implements Serializable {
 
 	@Column(name = "name")
 	private String name;
-
+	
+	@JsonProperty("created")
+	@Column(name = "created")
+	private Date created;
+	
+	@javax.persistence.Version 
+	@JsonProperty("modified")
+	@Column(name = "modified")
+	private Date modified;
+	
+	public File(){
+		this.created = new Date();
+	}
+	
 	@JsonProperty("id")
 	public UUID getId() {
 		return id;
@@ -45,19 +64,31 @@ public class File implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	public void setModified(Date date){
+		this.modified = date;
+	}
 
 	public void setName(String value) {
 		this.name = value;
 	}
-
-	@JsonProperty("versions")
-	public Set<Content> getContents() {
-		return this.contents;
+	
+	public Date getCreated(){
+		return this.created;
 	}
 
-	public Content addContent(InputStream input) throws FileNotFoundException, IOException {
-		Content content = new Content(this);
+	@JsonProperty("versions")
+	public Set<Version> getVersions() {
+		return this.versions;
+	}
+
+	public Version addContent(InputStream input) throws FileNotFoundException, IOException {
+		Version content = new Version(this);
 		content.saveFile(input);
 		return content;
+	}
+	
+	public Version getLastestVersion(){
+		return this.latestVersion;
 	}
 }

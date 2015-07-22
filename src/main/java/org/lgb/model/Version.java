@@ -13,7 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import java.util.HashSet;
 import java.util.Set;
 import java.io.InputStream;
@@ -21,14 +20,14 @@ import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "file_content")
-public class Content implements Serializable {
+public class Version implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "contents")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "versions")
 	private Set<Snapshot> snapshots = new HashSet<Snapshot>(0);
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {javax.persistence.CascadeType.PERSIST})
@@ -36,27 +35,25 @@ public class Content implements Serializable {
 	private File file;
 
 	@Id
-	@Column(name = "id")
-	@GeneratedValue
-	private Long id;
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "uuid", columnDefinition = "BINARY(16)")
+	private UUID id;
 	
 	@Column(name = "created")
 	private Date created;
 	
-	public Content(){
+	public Version(){
+		this.created = new Date();
 	}
 	
-	public Content(File file){
+	public Version(File file){
 		this.setFile(file);
-	}
-	
-	@PrePersist
-	protected void onCreate() {
-	  this.created = new Date();
+		this.created = new Date();
 	}
 	
 	@JsonProperty("id")
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 	
