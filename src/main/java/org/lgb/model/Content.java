@@ -21,7 +21,8 @@ public class Content implements Serializable {
 	
 	protected static Logger logger = Logger.getLogger("service");
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "content")
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "content")
 	private Set<Version> versions = new HashSet<Version>(0);
 
 	@Id

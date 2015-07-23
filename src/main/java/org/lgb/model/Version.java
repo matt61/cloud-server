@@ -2,7 +2,6 @@ package org.lgb.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,19 +16,23 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
 import java.util.UUID;
+import org.lgb.model.File;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "file_content")
 public class Version implements Serializable {
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "versions")
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "versions")
 	private Set<Snapshot> snapshots = new HashSet<Snapshot>(0);
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {javax.persistence.CascadeType.PERSIST})
 	@JoinColumn(name = "file_id", nullable = false)
 	private File file;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {javax.persistence.CascadeType.PERSIST})
 	@JoinColumn(name = "content_id", nullable = false)
 	private Content content;
@@ -76,6 +79,7 @@ public class Version implements Serializable {
 		this.content = content;
 	}
 	
+	@JsonIgnore
 	public Content getContent() {
 		return this.content;
 	}

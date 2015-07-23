@@ -2,9 +2,7 @@ package org.lgb.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -24,12 +22,15 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "file")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class File implements Serializable {
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "file")
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy = "file")
 	private Set<Version> versions = new HashSet<Version>(0);
 	
-	@OneToOne(cascade=CascadeType.ALL)  
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)  
     @JoinColumn(name="latest_version") 
 	private Version latestVersion;
 
@@ -42,7 +43,12 @@ public class File implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@JsonProperty("created")
+	@Column(name = "path")
+	private String path;
+	
+	@Column(name = "type")
+	private String type;
+	
 	@Column(name = "created")
 	private Date created;
 	
@@ -65,19 +71,38 @@ public class File implements Serializable {
 		return name;
 	}
 	
+	@JsonProperty("path")
+	public String getPath() {
+		return path;
+	}
+	
+	@JsonProperty("content-type")
+	public String getType() {
+		return type;
+	}
+	
 	public void setModified(Date date){
 		this.modified = date;
+	}
+	
+	public void setPath(String value) {
+		this.path = value;
+	}
+	
+	public void setType(String value) {
+		this.type = value;
 	}
 
 	public void setName(String value) {
 		this.name = value;
 	}
 	
+	@JsonProperty("created")
 	public Date getCreated(){
 		return this.created;
 	}
 
-	@JsonProperty("versions")
+	@JsonIgnore
 	public Set<Version> getVersions() {
 		return this.versions;
 	}

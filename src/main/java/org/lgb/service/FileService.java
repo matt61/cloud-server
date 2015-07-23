@@ -47,14 +47,28 @@ public class FileService {
 		return file.getLastestVersion();
 	}
 	
-	public static File addFile(String name){
+	public static File addFile(String name, String path, String type){
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		File file = new File();
 		file.setName(name);
+		file.setPath(path);
+		file.setType(type);
 		session.save(file);
 		trans.commit();
 		return file;
+	}
+	
+	public static byte[] getContent(UUID id){
+		Session session = sessionFactory.getCurrentSession();
+		Transaction trans = session.beginTransaction();
+		File file = (File) session.load(File.class, id);
+		byte[] bytes = "".getBytes();
+		if((file.getLastestVersion()) != null && file.getLastestVersion().getContent() != null){
+			bytes = file.getLastestVersion().getContent().getFile();
+		}
+		trans.commit();
+		return bytes;
 	}
 	
 	public static File getFile(UUID id){

@@ -71,7 +71,7 @@ public class Snapshot implements Serializable {
 		return this.versions;
 	}
 	
-	public void addFile(File file){
-		this.versions.add(file.getLastestVersion());
+	public void addVersion(Version version){
+		this.versions.add(version);
 	}
 }

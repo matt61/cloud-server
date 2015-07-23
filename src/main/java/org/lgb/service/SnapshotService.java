@@ -35,9 +35,18 @@ public class SnapshotService {
 	}
 	
 	public static Snapshot addFiles(UUID id, Set<UUID> fileIds){
-		Snapshot snapshot = SnapshotService.get(id);
-		File file = FileService.getFile(fileId);
-		snapshot.addFile(file);
+		Session session = sessionFactory.getCurrentSession();
+		Transaction trans = session.beginTransaction();
+		Snapshot snapshot = (Snapshot) session.load(Snapshot.class, id);
+		for (UUID fileId:fileIds){
+			File file = (File) session.load(File.class, fileId);
+			if (file.getLastestVersion() != null){
+				snapshot.addVersion(file.getLastestVersion());
+			}		
+		}
+		session.save(snapshot);
+		trans.commit();
+		return snapshot;
 	}
 	
 	public static Snapshot get(UUID id){
