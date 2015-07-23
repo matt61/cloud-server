@@ -12,9 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.swagger.annotations.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.lgb.service.FileService;
 import org.lgb.service.SnapshotService;
 import org.lgb.model.Snapshot;
@@ -29,7 +27,7 @@ public class SnapshotResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Find a snapshot by id")
     public Snapshot getSnapshot(@PathParam("id") UUID id) {
-		return SnapshotService.getSnapshot(id);
+		return SnapshotService.get(id);
     }
 	
 	@POST
@@ -37,7 +35,7 @@ public class SnapshotResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@ApiOperation(value = "Upload content to file")
 	public Response addFile(@PathParam("id") UUID id, @FormParam("file") UUID fileId) throws IOException {
-		Snapshot snapshot = SnapshotService.getSnapshot(id);
+		Snapshot snapshot = SnapshotService.get(id);
 		File file = FileService.getFile(fileId);
 		snapshot.addFile(file);
 		return Response.status(201).entity(snapshot.getVersions().size()).build();
@@ -48,7 +46,6 @@ public class SnapshotResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@ApiOperation(value = "Create a new Snapshot")
     public Response addSnapshot(@FormParam("name") String name) throws IOException {
-		Snapshot snapshot = SnapshotService.addSnapshot(name);
-		return Response.status(201).entity(snapshot.getId()).build();
+		return Response.status(201).entity(SnapshotService.add(name).getId()).build();
     }
 }

@@ -18,12 +18,4 @@ public class SnapshotTest {
 		snapshot.setName("TEST NAME");
 		assertEquals("TEST NAME", snapshot.getName());
 	}
-	
-	@Test
-	public void shouldAddFile() throws IOException {
-		File file = new File();
-		file.addContent(IOUtils.toInputStream("This is a test", "UTF-8"));
-		Snapshot snapshot = new Snapshot();
-		snapshot.addFile(file);
-	}
 }

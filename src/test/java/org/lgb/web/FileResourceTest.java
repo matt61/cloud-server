@@ -11,13 +11,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
-import org.lgb.model.File;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
 import java.io.InputStream;
 import java.util.UUID;
@@ -60,7 +57,7 @@ public class FileResourceTest extends JerseyTest {
 		InputStream data = IOUtils.toInputStream("This is a test", "UTF-8");
 		StreamDataBodyPart fdp = new StreamDataBodyPart("file", data);
 		form.bodyPart(fdp);
-		Response response = target("file/"+this.fileId+"/upload").request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.MULTIPART_FORM_DATA), Response.class);
+		Response response = target("file/"+this.fileId+"/content").request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.MULTIPART_FORM_DATA), Response.class);
 		this.contentId = response.readEntity(UUID.class);
 		assertEquals(201, response.getStatus());
     }

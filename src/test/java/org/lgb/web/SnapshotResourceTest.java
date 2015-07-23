@@ -11,13 +11,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
-import org.lgb.model.File;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
 import java.io.InputStream;
 import java.util.UUID;
@@ -26,8 +23,6 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.apache.commons.io.IOUtils;
 import org.junit.runners.MethodSorters;
 import org.junit.FixMethodOrder;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SnapshotResourceTest extends JerseyTest {

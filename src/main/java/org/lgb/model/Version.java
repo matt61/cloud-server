@@ -15,10 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.util.HashSet;
 import java.util.Set;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
@@ -33,6 +29,10 @@ public class Version implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {javax.persistence.CascadeType.PERSIST})
 	@JoinColumn(name = "file_id", nullable = false)
 	private File file;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {javax.persistence.CascadeType.PERSIST})
+	@JoinColumn(name = "content_id", nullable = false)
+	private Content content;
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -44,11 +44,12 @@ public class Version implements Serializable {
 	private Date created;
 	
 	public Version(){
-		this.created = new Date();
+		
 	}
 	
-	public Version(File file){
+	public Version(File file, Content content){
 		this.setFile(file);
+		this.setContent(content);
 		this.created = new Date();
 	}
 	
@@ -70,27 +71,17 @@ public class Version implements Serializable {
 	public File getFile() {
 		return this.file;
 	}
+	
+	public void setContent(Content content) {
+		this.content = content;
+	}
+	
+	public Content getContent() {
+		return this.content;
+	}
 
 	@JsonIgnore
 	public Set<Snapshot> getSnapshots() {
 		return this.snapshots;
-	}
-
-	public void saveFile(InputStream input) throws FileNotFoundException, IOException {
-		byte[] buffer = new byte[8 * 1024];
-
-		try {
-			OutputStream output = new FileOutputStream("/tmp/"+this.getFile().getName());
-			try {
-				int bytesRead;
-				while ((bytesRead = input.read(buffer)) != -1) {
-					output.write(buffer, 0, bytesRead);
-				}
-			} finally {
-				output.close();
-			}
-		} finally {
-			input.close();
-		}
 	}
 }

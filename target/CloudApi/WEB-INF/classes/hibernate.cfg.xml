@@ -34,6 +34,7 @@
 		<mapping class="org.lgb.model.File"/>
 		<mapping class="org.lgb.model.Snapshot"/>
 		<mapping class="org.lgb.model.Version"/>
+		<mapping class="org.lgb.model.Content"/>
 		<!--
         <mapping resource="lgb/resources/User.hbm.xml"/>
 		-->

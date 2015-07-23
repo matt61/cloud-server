@@ -81,14 +81,13 @@ public class File implements Serializable {
 	public Set<Version> getVersions() {
 		return this.versions;
 	}
-
-	public Version addContent(InputStream input) throws FileNotFoundException, IOException {
-		Version content = new Version(this);
-		content.saveFile(input);
-		return content;
-	}
 	
+	@JsonIgnore
 	public Version getLastestVersion(){
 		return this.latestVersion;
+	}
+	
+	public void setLatestVersion(Version version){
+		this.latestVersion = version;
 	}
 }

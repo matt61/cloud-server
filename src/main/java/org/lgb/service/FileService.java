@@ -16,6 +16,7 @@ import org.hibernate.Transaction;
 import org.lgb.util.Hibernate;
 import org.lgb.model.Version;
 import org.lgb.model.File;
+import org.lgb.model.Content;
 
 /**
  *
@@ -26,17 +27,24 @@ public class FileService {
 	protected static Logger logger = Logger.getLogger("service");
 	protected static SessionFactory sessionFactory = Hibernate.getSessionFactory();
 	
-	public static Version uploadContent(UUID id, InputStream uploadedInputStream) throws IOException{
-		logger.debug("Adding version");
+	public static Version upload(UUID id, InputStream uploadedInputStream) throws IOException {	
+		Content content = ContentService.store(uploadedInputStream);	
 		Session session = sessionFactory.getCurrentSession();
 		Transaction trans = session.beginTransaction();
-		File file = (File) session.get(File.class, id);
-		Version version = file.addContent(uploadedInputStream);
-		file.setModified(new Date());
-		session.persist(file);
-		session.persist(version);
+		File file = (File) session.load(File.class, id);
+		//Only create a new version if the current version content is different
+		if (file.getLastestVersion() == null || file.getLastestVersion().getContent().getId() != content.getId()){
+			Version version = new Version(file, content);
+			file.setModified(new Date());
+			file.setLatestVersion(version);
+			session.persist(file);
+			session.persist(version);
+			trans.commit();
+			return version;
+		}
 		trans.commit();
-		return version;
+		
+		return file.getLastestVersion();
 	}
 	
 	public static File addFile(String name){
